@@ -16,12 +16,10 @@ const sanitizeInput = (value: string) => {
     : parseInt(value);
 };
 
-const Input = ({ value, onChange, onClick }: InputProps) => (
+const Input = (props: InputProps) => (
   <input
-    value={value}
     className="w-full text-center bg-transparent outline-none"
-    onChange={onChange}
-    onClick={onClick}
+    {...props}
   />
 );
 
@@ -43,8 +41,6 @@ const TimerDisplay = ({
   const min = populateNumber(minRaw);
   const sec = populateNumber(secRaw);
 
-  console.log(secRaw, sec);
-
   const [editMin, setEditMin] = useState(min);
   const [editSec, setEditSec] = useState(sec);
 
@@ -59,7 +55,7 @@ const TimerDisplay = ({
   }
 
   return (
-    <div className="flex justify-center w-2/3 text-white text-7xl h-fit">
+    <div className="flex justify-center w-2/3 text-white text-7xl h-fit font-bebas lg:text-[196px]">
       <Input
         value={isRunning ? min : editMin}
         onChange={(e) => {
@@ -68,6 +64,7 @@ const TimerDisplay = ({
           setEditMin(value);
           setTime(+value * 60 + secRaw);
         }}
+        onBlur={() => setEditMin(min)}
         onClick={editTimer}
       />
       :
@@ -75,10 +72,11 @@ const TimerDisplay = ({
         value={isRunning ? sec : editSec}
         onChange={(e) => {
           let value = sanitizeInput(e.target.value);
-          if (Number.isNaN(value) || value > 99) return;
+          if (Number.isNaN(value) || value > 59) return;
           setEditSec(value);
           setTime(+value + minRaw * 60);
         }}
+        onBlur={() => setEditSec(sec)}
         onClick={editTimer}
       />
     </div>
@@ -88,8 +86,8 @@ const TimerDisplay = ({
 function App() {
   const [isRunning, setIsRunning] = useState(false);
   const [time, setTime] = useState(3);
-  const [isDone, setIsDone] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const isDone = time <= 0;
 
   useEffect(() => {
     const id =
@@ -103,12 +101,11 @@ function App() {
   useEffect(() => {
     if (time === 0) {
       setIsRunning(false);
-      setIsDone(true);
       !isEditing &&
         setTimeout(() => {
           alert("Time's up!");
         }, 100);
-    } else setIsDone(false);
+    }
   }, [time, isEditing]);
 
   return (
@@ -116,9 +113,9 @@ function App() {
       <div
         className={`grid rounded-full w-80 aspect-square place-content-center ${
           isDone ? "bg-red-600" : "bg-green-700"
-        }`}
+        } shadow-outer-circle sm:w-[520px]`}
       >
-        <div className="w-[19rem] bg-dark aspect-square rounded-full flex flex-col items-center">
+        <div className="w-[19rem] bg-inner-circle-dark aspect-square rounded-full flex flex-col items-center shadow-inner-circle sm:w-[500px]">
           <div className="flex-1"></div>
           <TimerDisplay
             time={time}
@@ -127,15 +124,16 @@ function App() {
             setIsRunning={setIsRunning}
             setIsEditing={setIsEditing}
           />
-          <div className="flex flex-col items-center justify-center flex-1 gap-3">
+          <div className="flex flex-col items-center justify-center flex-1 gap-3 sm:justify-start">
             <h3
-              className="text-3xl text-white opacity-50 cursor-pointer"
+              className="text-3xl text-white opacity-50 cursor-pointer hover:opacity-100 font-montserrat"
               onClick={() => {
-                setIsRunning((r) => !r);
                 setIsEditing(false);
+                if (isDone) return;
+                setIsRunning((r) => !r);
               }}
             >
-              {isRunning || isDone ? "PAUSE" : "START"}
+              {isDone ? "DONE" : isRunning ? "PAUSE" : "START"}
             </h3>
             <img src={gear} className="cursor-pointer w-9 opacity-30" />
           </div>

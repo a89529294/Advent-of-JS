@@ -1,0 +1,14 @@
+1. RUNNING
+    timer goes down, once it reaches 0 show alert and change background color of ring from green to red.
+2. EDITING
+    Prevent using from entering any non numerical value, all numerical values must be between 0 and 59
+    If user enter 0 min 0 sec, show red ring and disable button, show DONE text on button.
+    DO NOT perform any other state changes besides chan
+    User leaves editing mode only when he clicks on start button.
+3. PAUSE
+    pause timer, show start button
+
+START/PAUSE/DONE button
+
+
+
