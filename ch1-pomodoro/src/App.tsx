@@ -1,4 +1,11 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  forwardRef,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import "./App.css";
 
 import gear from "./images/gear.svg";
@@ -16,11 +23,14 @@ const sanitizeInput = (value: string) => {
     : parseInt(value);
 };
 
-const Input = (props: InputProps) => (
-  <input
-    className="w-full text-center bg-transparent outline-none"
-    {...props}
-  />
+const Input = forwardRef<HTMLInputElement, InputProps>(
+  ({ className, ...props }, ref) => (
+    <input
+      className="w-full text-center bg-transparent outline-none"
+      ref={ref}
+      {...props}
+    />
+  )
 );
 
 const TimerDisplay = ({
@@ -29,10 +39,12 @@ const TimerDisplay = ({
   isRunning,
   setIsRunning,
   setIsEditing,
+  isEditing,
 }: {
   time: number;
   setTime: Dispatch<SetStateAction<number>>;
   isRunning: boolean;
+  isEditing: boolean;
   setIsRunning: Dispatch<SetStateAction<boolean>>;
   setIsEditing: Dispatch<SetStateAction<boolean>>;
 }) => {
@@ -44,10 +56,20 @@ const TimerDisplay = ({
   const [editMin, setEditMin] = useState(min);
   const [editSec, setEditSec] = useState(sec);
 
+  const minInputRef = useRef<HTMLInputElement>(null);
+  const secInputRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     isRunning && setEditMin(min);
     isRunning && setEditSec(sec);
   }, [min, sec, isRunning]);
+
+  useEffect(() => {
+    if (!isEditing) {
+      minInputRef.current?.blur();
+      secInputRef.current?.blur();
+    }
+  }, [isEditing]);
 
   function editTimer() {
     setIsRunning(false);
@@ -55,7 +77,7 @@ const TimerDisplay = ({
   }
 
   return (
-    <div className="flex justify-center w-2/3 text-white text-7xl h-fit font-bebas lg:text-[196px]">
+    <div className="flex justify-center w-2/3 text-white text-7xl h-fit font-bebas sm:text-[196px]">
       <Input
         value={isRunning ? min : editMin}
         onChange={(e) => {
@@ -66,6 +88,7 @@ const TimerDisplay = ({
         }}
         onBlur={() => setEditMin(min)}
         onClick={editTimer}
+        ref={minInputRef}
       />
       :
       <Input
@@ -78,6 +101,7 @@ const TimerDisplay = ({
         }}
         onBlur={() => setEditSec(sec)}
         onClick={editTimer}
+        ref={secInputRef}
       />
     </div>
   );
@@ -87,6 +111,7 @@ function App() {
   const [isRunning, setIsRunning] = useState(false);
   const [time, setTime] = useState(3);
   const [isEditing, setIsEditing] = useState(false);
+  const appRef = useRef<HTMLDivElement>(null);
   const isDone = time <= 0;
 
   useEffect(() => {
@@ -108,8 +133,21 @@ function App() {
     }
   }, [time, isEditing]);
 
+  useEffect(() => {
+    const startTimer = (e: KeyboardEvent) => {
+      if (e.key === "Enter") {
+        setIsEditing(false);
+        setIsRunning(true);
+      }
+    };
+    isEditing &&
+      appRef.current &&
+      appRef.current.addEventListener("keydown", startTimer);
+    return () => appRef.current?.removeEventListener("keydown", startTimer);
+  }, [isEditing, appRef.current]);
+
   return (
-    <div className="grid min-h-full bg-dark place-content-center">
+    <div className="grid min-h-full bg-dark place-content-center" ref={appRef}>
       <div
         className={`grid rounded-full w-80 aspect-square place-content-center ${
           isDone ? "bg-red-600" : "bg-green-700"
@@ -119,8 +157,9 @@ function App() {
           <div className="flex-1"></div>
           <TimerDisplay
             time={time}
-            setTime={setTime}
             isRunning={isRunning}
+            isEditing={isEditing}
+            setTime={setTime}
             setIsRunning={setIsRunning}
             setIsEditing={setIsEditing}
           />
