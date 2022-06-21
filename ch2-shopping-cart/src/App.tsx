@@ -8,6 +8,11 @@ import products from "./products";
 import Card from "./components/Card";
 import MenuItem from "./components/MenuItem";
 
+type CartItem = {
+  id: number;
+  quantity: number;
+};
+
 const getProductValue = (id: number, key: keyof typeof products[number]) => {
   const foundProduct = products.find((p) => p.id === id);
   return foundProduct ? foundProduct[key] : "";
@@ -17,7 +22,7 @@ const isInArray = (arr: { id: number }[], id: number) =>
   arr.some((item) => item.id === id);
 
 function reducer(
-  state: { id: number; quantity: number }[],
+  state: CartItem[],
   action: { type: string; payload: { id: number } }
 ) {
   const newItemId = action.payload.id;
@@ -31,11 +36,10 @@ function reducer(
   } else if (action.type === "remove") {
     return state.filter((item) => item.id !== newItemId);
   } else if (action.type === "inc") {
-    const newState = state.slice();
+    const newState = structuredClone(state) as CartItem[];
     const foundItem = newState.find((item) => item.id === newItemId);
     const foundItemInState = state.find((item) => item.id === newItemId);
-    console.log(foundItemInState?.quantity);
-    foundItem!.quantity = ++foundItemInState!.quantity;
+    foundItem!.quantity = foundItemInState!.quantity + 1;
     return newState;
   } else if (action.type === "dec") {
     return state;
