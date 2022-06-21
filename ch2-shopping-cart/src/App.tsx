@@ -2,13 +2,15 @@ import React, { useReducer } from "react";
 import bg_left from "./assets/bg__left.svg";
 import bg_top_right from "./assets/bg__top-right.svg";
 import bg_btm_right from "./assets/bg__btm-right.svg";
+import chevron_left from "./assets/chevron-left.svg";
+import chevron_right from "./assets/chevron-right.svg";
 import products from "./products";
 import Card from "./components/Card";
 import MenuItem from "./components/MenuItem";
 
-const getProductName = (id: number) => {
+const getProductValue = (id: number, key: keyof typeof products[number]) => {
   const foundProduct = products.find((p) => p.id === id);
-  return foundProduct ? foundProduct.name : "";
+  return foundProduct ? foundProduct[key] : "";
 };
 
 const isInArray = (arr: { id: number }[], id: number) =>
@@ -28,13 +30,24 @@ function reducer(
     }
   } else if (action.type === "remove") {
     return state.filter((item) => item.id !== newItemId);
+  } else if (action.type === "inc") {
+    const newState = state.slice();
+    const foundItem = newState.find((item) => item.id === newItemId);
+    const foundItemInState = state.find((item) => item.id === newItemId);
+    console.log(foundItemInState?.quantity);
+    foundItem!.quantity = ++foundItemInState!.quantity;
+    return newState;
+  } else if (action.type === "dec") {
+    return state;
+  } else {
+    return state;
   }
-  return state;
 }
 
 function App() {
   const [cartItems, setCartItems] = useReducer(reducer, []);
-
+  const getItemQuantity = (id: number) =>
+    cartItems.find((item) => item.id === id)?.quantity;
   return (
     <div className="h-full bg-[#EFF0F6] flex justify-center items-center gap-12 py-24 relative isolate">
       <Card title="To Go Menu">
@@ -59,11 +72,49 @@ function App() {
       </Card>
       <Card title="Your Cart">
         {cartItems.length ? (
-          cartItems.map((item) => (
-            <div className="px-6" key={item.id}>
-              {getProductName(item.id)}
-            </div>
-          ))
+          <div className="px-6">
+            {cartItems.map((item) => (
+              <div
+                className="flex gap-4 pb-11 border-b border-solid border-[#D7D7F9] pt-8 first:pt-0 last:border-b-[5px]"
+                key={item.id}
+              >
+                <img
+                  src={getProductValue(item.id, "img") as string}
+                  className="self-start w-16 aspect-square"
+                />
+                <div className="flex flex-col flex-1 gap-4">
+                  <div>
+                    <h3 className="text-lg">
+                      {getProductValue(item.id, "name")}
+                    </h3>
+                    <h4 className="text-base font-bold leading-loose">
+                      ${getProductValue(item.id, "price")}
+                    </h4>
+                  </div>
+
+                  <div className="flex items-center gap-4">
+                    <button
+                      className="grid w-8 rounded-full aspect-square bg-primary place-content-center"
+                      onClick={() =>
+                        setCartItems({ type: "dec", payload: { id: item.id } })
+                      }
+                    >
+                      <img src={chevron_left} className="w-6" />
+                    </button>
+                    <span>{getItemQuantity(item.id)}</span>
+                    <button
+                      className="grid w-8 rounded-full aspect-square bg-primary place-content-center"
+                      onClick={() =>
+                        setCartItems({ type: "inc", payload: { id: item.id } })
+                      }
+                    >
+                      <img src={chevron_right} className="w-6" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         ) : (
           <span className="text-base ml-9">Your cart is empty.</span>
         )}
