@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .white-keys {
+    @apply fill-white hover:fill-[#ffd200];
+  }
+
+  .black-keys {
+    @apply fill-black hover:fill-[#f40082];
+  }
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
