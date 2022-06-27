@@ -23,3 +23,7 @@
 1. click to strike through
 2. shift click to strike through multiple items
 3. tab + space/enter to strike through
+
+- TODO
+
+1. Add an animation on load, have the podcast list slide out from under the podcast artwork
