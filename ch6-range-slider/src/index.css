@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .track {
+    @apply track:bg-[#4D4C53] track:h-[13.6px] track:rounded-[10px];
+  }
+
+  .thumb {
+    @apply thumb:appearance-none thumb:h-12 thumb:w-12 thumb:bg-[#EA346F] thumb:-mt-[17.2px] thumb:border-0 thumb:rounded-full;
+  }
+
+  .focus-thumb-border {
+    @apply focus:thumb:border focus:thumb:border-solid focus:thumb:border-[#053a5f];
+  }
+
+  .focus-thumb-outline {
+    @apply focus:thumb:outline-[3px] focus:thumb:outline focus:thumb:outline-[#053a5f] focus:thumb:outline-offset-[3px];
+  }
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
