@@ -4,11 +4,15 @@
 
 @layer components {
   .track {
-    @apply track:bg-[#4D4C53] track:h-[13.6px] track:rounded-[10px];
+    @apply track:bg-[#4D4C53] track:h-track track:rounded-track;
   }
 
   .thumb {
-    @apply thumb:appearance-none thumb:h-12 thumb:w-12 thumb:bg-[#EA346F] thumb:-mt-[17.2px] thumb:border-0 thumb:rounded-full;
+    @apply thumb:appearance-none thumb:h-20 thumb:w-20 thumb:bg-glowing-thumb thumb:-mt-[33.2px] thumb:border-0 thumb:rounded-full thumb:m-variable-margin;
+  }
+
+  .occupied-track {
+    @apply before:block before:content-[''] before:absolute before:w-variable-width before:h-track before:bg-pink-primary before:rounded-track;
   }
 
   .focus-thumb-border {
