@@ -26,16 +26,29 @@ const CustomRange = ({
         setOccupiedLength(+e.target.value);
       }}
       style={styleObj}
+      step={0.01}
     />
   );
 };
 
 function App() {
   const [sliderValue, setSliderValue] = useState(0);
+  const getDisplayValue = () => {
+    let copy = sliderValue.toFixed(2);
+    copy = copy.length < 5 ? "0" + copy : copy;
+    return copy;
+  };
   return (
-    <div className="min-h-full bg-[#262529] grid place-items-center">
-      <div className="rounded-[20px] shadow-[0_0_250px_0_#000] ">
+    <div className="min-h-full bg-[#262529] grid place-items-center font-source-sans-pro">
+      <div className="rounded-[20px] shadow-[0_0_250px_0_#000] grid gap-16 pt-14 pb-16 px-20 justify-items-center">
+        <h1 className="text-gold-primary text-[93px] leading-tight font-bold">
+          <sup className="font-black text-[65px]">$</sup>
+          {getDisplayValue()}
+        </h1>
         <CustomRange value={sliderValue} setValue={setSliderValue} />
+        <button className="text-white text-[30px] py-8 px-24 tracking-widest bg-[#333139] rounded-[100px] font-bold">
+          BUY NOW
+        </button>
       </div>
     </div>
   );

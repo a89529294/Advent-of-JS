@@ -9,6 +9,7 @@ module.exports = {
       },
       colors: {
         "pink-primary": "#EA346F",
+        "gold-primary": "#FFC700",
       },
       backgroundImage: {
         "glowing-thumb":
@@ -25,6 +26,9 @@ module.exports = {
       },
       spacing: {
         "variable-margin": "var(--adjustable-margin)",
+      },
+      dropShadow: {
+        "occupied-track": "0 2px 10px rgba(234, 52, 111, 0.8)",
       },
     },
   },

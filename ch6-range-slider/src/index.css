@@ -12,7 +12,7 @@
   }
 
   .occupied-track {
-    @apply before:block before:content-[''] before:absolute before:w-variable-width before:h-track before:bg-pink-primary before:rounded-track;
+    @apply before:block before:content-[''] before:absolute before:w-variable-width before:h-track before:bg-pink-primary before:rounded-track before:drop-shadow-occupied-track;
   }
 
   .focus-thumb-border {
