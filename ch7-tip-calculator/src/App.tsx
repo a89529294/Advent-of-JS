@@ -7,7 +7,7 @@ function App() {
   const [count, setCount] = useState(0);
 
   return (
-    <div className="min-h-full bg-[#F6F6F3] grid place-items-center ">
+    <div className="min-h-full bg-[#F6F6F3] grid place-items-center py-10">
       <div className="w-[750px] rounded-[20px] overflow-hidden drop-shadow-[0_0px_44px_rgba(148,146,120,0.23)]">
         <Section amount={4.02} label="Tip Amount" borderBottom />
         <Section amount={12.02} label="Total Per Person" />
@@ -16,9 +16,34 @@ function App() {
             <BottomSection img={dollar} amount={100.11} label="Bill Amount" />
             <BottomSection img={people} amount={2} label="Number of People" />
           </div>
+          <div className="bg-[#EEEEEE] flex justify-between px-9 py-5 border-t border-b border-solid border-[#DEDEDE]">
+            <TipPercentButton percent={5} />
+            <TipPercentButton percent={10} />
+            <TipPercentButton percent={15} />
+            <TipPercentButton percent={20} />
+          </div>
+          <div className="flex justify-end px-9 pt-9 pb-7">
+            <CalculateButton />
+          </div>
         </div>
       </div>
     </div>
+  );
+}
+
+function CalculateButton() {
+  return (
+    <button className="py-[18px] px-24 bg-[#ED7861] drop-shadow-button rounded-2xl text-white text-2xl font-bold">
+      Calculate
+    </button>
+  );
+}
+
+function TipPercentButton({ percent }: { percent: number }) {
+  return (
+    <button className="text-[#60C1B6] font-roboto text-2xl font-bold py-4 px-14 bg-white drop-shadow-button rounded-2xl">
+      {percent}%
+    </button>
   );
 }
 

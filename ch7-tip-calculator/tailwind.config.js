@@ -10,6 +10,9 @@ module.exports = {
       colors: {
         "black-primary": "#333333",
       },
+      dropShadow: {
+        button: "0 1px 8px rgba(0,0,0,0.05)",
+      },
     },
   },
   plugins: [],
