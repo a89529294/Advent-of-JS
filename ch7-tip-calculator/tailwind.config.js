@@ -9,6 +9,7 @@ module.exports = {
       },
       colors: {
         "black-primary": "#333333",
+        "indigo-primary": "#60C1B6",
       },
       dropShadow: {
         button: "0 1px 8px rgba(0,0,0,0.05)",
