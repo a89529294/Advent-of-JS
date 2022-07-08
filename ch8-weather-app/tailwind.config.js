@@ -8,6 +8,7 @@ module.exports = {
         "reviving-green": "#e6df95",
         "black-chasm": "#0e2e3a",
         "freezing-vapor": "#d3ebf4",
+        "devil-blue": "#247490",
       },
       fontFamily: {
         "krona-one": ["'Krona One'", "sans-serif"],

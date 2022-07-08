@@ -1,12 +1,6 @@
 import React from "react";
 
-function Cloudy({
-  className,
-  style,
-}: {
-  className?: string;
-  style?: React.CSSProperties;
-}) {
+function Cloudy({ className }: { className?: string }) {
   return (
     <svg
       width="264"
@@ -15,7 +9,6 @@ function Cloudy({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={`${className}`}
-      style={style}
     >
       <g style={{ mixBlendMode: "multiply" }}>
         <path
