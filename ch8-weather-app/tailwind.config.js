@@ -13,8 +13,8 @@ module.exports = {
         "krona-one": ["'Krona One'", "sans-serif"],
         oswald: ["Oswald", "sans-serif"],
       },
-      dropShadow: {
-        day: "14.5px 5.27px 45px rgba(32,77,92,0.7)",
+      boxShadow: {
+        day: "14.5px 5.27px 45px 0px rgba(32,77,92,0.7)",
       },
     },
   },

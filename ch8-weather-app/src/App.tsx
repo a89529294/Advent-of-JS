@@ -3,7 +3,7 @@ import Cloudy from "./components/Cloudy";
 
 function App() {
   return (
-    <div className="min-h-full bg-[#E9F5FA] grid place-items-center">
+    <div className="min-h-full bg-[#E9F5FA] grid place-items-center ">
       {WeekData.map((d) => (
         <Day
           key={d.date}
@@ -14,6 +14,7 @@ function App() {
           tempC={d.tempC}
           mainTextColor={d.mainTextColor}
           subTextColor={d.subTextColor}
+          offsetWeatherIcon={d.offsetWeatherIcon}
         />
       ))}
     </div>
@@ -28,6 +29,7 @@ function Day({
   tempC,
   mainTextColor,
   subTextColor,
+  offsetWeatherIcon = "",
 }: {
   dayOfWeek: string;
   date: number;
@@ -36,17 +38,20 @@ function Day({
   tempC: number;
   mainTextColor: string;
   subTextColor: string;
+  offsetWeatherIcon?: string;
 }) {
   return (
-    <section className="text-center">
+    <section className="text-center ">
       <div className="grid gap-2 text-epimetheus font-krona-one">
         <span className="text-2xl">{dayOfWeek}</span>
         <span className="text-7xl">{date}</span>
       </div>
       <div
-        className={`relative pb-6 pt-14 drop-shadow-day rounded-full  ${bgColor}`}
+        className={`relative pb-6 pt-14 px-7 shadow-day rounded-[60px] ${bgColor}`}
       >
-        <Cloudy className="absolute mix-blend-multiply" />
+        <Cloudy
+          className={`absolute ${offsetWeatherIcon ? offsetWeatherIcon : ""}`}
+        />
         <div className={`font-oswald text-[145px] ${mainTextColor}`}>
           {tempF}
         </div>
