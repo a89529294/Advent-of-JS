@@ -1,6 +1,6 @@
 import React from "react";
 
-function Cloudy({ className }: { className?: string }) {
+function Cloudy() {
   return (
     <svg
       width="264"
@@ -8,7 +8,6 @@ function Cloudy({ className }: { className?: string }) {
       viewBox="0 0 264 166"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={`${className}`}
     >
       <g style={{ mixBlendMode: "multiply" }}>
         <path

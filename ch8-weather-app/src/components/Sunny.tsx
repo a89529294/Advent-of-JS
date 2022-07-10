@@ -1,6 +1,6 @@
 import React from "react";
 
-function Sunny({ className }: { className?: string }) {
+function Sunny() {
   return (
     <svg
       width="208"
@@ -8,7 +8,6 @@ function Sunny({ className }: { className?: string }) {
       viewBox="0 0 208 213"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={`${className}`}
     >
       <g className="mix-blend-multiply">
         <path
@@ -1823,8 +1822,8 @@ function Sunny({ className }: { className?: string }) {
           y2="38.9566"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFD45C" />
-          <stop offset="1" stop-color="#FF9D00" />
+          <stop stopColor="#FFD45C" />
+          <stop offset="1" stopColor="#FF9D00" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_2_192"
@@ -1834,8 +1833,8 @@ function Sunny({ className }: { className?: string }) {
           y2="188.756"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFD45C" />
-          <stop offset="1" stop-color="#FF9D00" />
+          <stop stopColor="#FFD45C" />
+          <stop offset="1" stopColor="#FF9D00" />
         </linearGradient>
         <linearGradient
           id="paint2_linear_2_192"
@@ -1845,8 +1844,8 @@ function Sunny({ className }: { className?: string }) {
           y2="113.854"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFD45C" />
-          <stop offset="1" stop-color="#FF9D00" />
+          <stop stopColor="#FFD45C" />
+          <stop offset="1" stopColor="#FF9D00" />
         </linearGradient>
         <linearGradient
           id="paint3_linear_2_192"
@@ -1856,8 +1855,8 @@ function Sunny({ className }: { className?: string }) {
           y2="113.854"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFD45C" />
-          <stop offset="1" stop-color="#FF9D00" />
+          <stop stopColor="#FFD45C" />
+          <stop offset="1" stopColor="#FF9D00" />
         </linearGradient>
         <linearGradient
           id="paint4_linear_2_192"
@@ -1867,8 +1866,8 @@ function Sunny({ className }: { className?: string }) {
           y2="163.829"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFD45C" />
-          <stop offset="1" stop-color="#FF9D00" />
+          <stop stopColor="#FFD45C" />
+          <stop offset="1" stopColor="#FF9D00" />
         </linearGradient>
         <linearGradient
           id="paint5_linear_2_192"
@@ -1878,8 +1877,8 @@ function Sunny({ className }: { className?: string }) {
           y2="57.901"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFD45C" />
-          <stop offset="1" stop-color="#FF9D00" />
+          <stop stopColor="#FFD45C" />
+          <stop offset="1" stopColor="#FF9D00" />
         </linearGradient>
         <linearGradient
           id="paint6_linear_2_192"
@@ -1889,8 +1888,8 @@ function Sunny({ className }: { className?: string }) {
           y2="171.237"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFD45C" />
-          <stop offset="1" stop-color="#FF9D00" />
+          <stop stopColor="#FFD45C" />
+          <stop offset="1" stopColor="#FF9D00" />
         </linearGradient>
         <linearGradient
           id="paint7_linear_2_192"
@@ -1900,8 +1899,8 @@ function Sunny({ className }: { className?: string }) {
           y2="65.3109"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFD45C" />
-          <stop offset="1" stop-color="#FF9D00" />
+          <stop stopColor="#FFD45C" />
+          <stop offset="1" stopColor="#FF9D00" />
         </linearGradient>
         <linearGradient
           id="paint8_linear_2_192"
@@ -1911,8 +1910,8 @@ function Sunny({ className }: { className?: string }) {
           y2="142.98"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFBB31" />
-          <stop offset="1" stop-color="#FF9D00" />
+          <stop stopColor="#FFBB31" />
+          <stop offset="1" stopColor="#FF9D00" />
         </linearGradient>
         <linearGradient
           id="paint9_linear_2_192"
@@ -1922,8 +1921,8 @@ function Sunny({ className }: { className?: string }) {
           y2="85.6505"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFBB31" />
-          <stop offset="1" stop-color="#FF9D00" />
+          <stop stopColor="#FFBB31" />
+          <stop offset="1" stopColor="#FF9D00" />
         </linearGradient>
         <linearGradient
           id="paint10_linear_2_192"
@@ -1933,8 +1932,8 @@ function Sunny({ className }: { className?: string }) {
           y2="45.1127"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFBB31" />
-          <stop offset="1" stop-color="#FF9D00" />
+          <stop stopColor="#FFBB31" />
+          <stop offset="1" stopColor="#FF9D00" />
         </linearGradient>
         <linearGradient
           id="paint11_linear_2_192"
@@ -1944,8 +1943,8 @@ function Sunny({ className }: { className?: string }) {
           y2="183.514"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFBB31" />
-          <stop offset="1" stop-color="#FF9D00" />
+          <stop stopColor="#FFBB31" />
+          <stop offset="1" stopColor="#FF9D00" />
         </linearGradient>
         <linearGradient
           id="paint12_linear_2_192"
@@ -1955,8 +1954,8 @@ function Sunny({ className }: { className?: string }) {
           y2="138.409"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFBB31" />
-          <stop offset="1" stop-color="#FF9D00" />
+          <stop stopColor="#FFBB31" />
+          <stop offset="1" stopColor="#FF9D00" />
         </linearGradient>
         <linearGradient
           id="paint13_linear_2_192"
@@ -1966,8 +1965,8 @@ function Sunny({ className }: { className?: string }) {
           y2="81.082"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFBB31" />
-          <stop offset="1" stop-color="#FF9D00" />
+          <stop stopColor="#FFBB31" />
+          <stop offset="1" stopColor="#FF9D00" />
         </linearGradient>
         <linearGradient
           id="paint14_linear_2_192"
@@ -1977,8 +1976,8 @@ function Sunny({ className }: { className?: string }) {
           y2="178.95"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFBB31" />
-          <stop offset="1" stop-color="#FF9D00" />
+          <stop stopColor="#FFBB31" />
+          <stop offset="1" stopColor="#FF9D00" />
         </linearGradient>
         <linearGradient
           id="paint15_linear_2_192"
@@ -1988,8 +1987,8 @@ function Sunny({ className }: { className?: string }) {
           y2="40.5506"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFBB31" />
-          <stop offset="1" stop-color="#FF9D00" />
+          <stop stopColor="#FFBB31" />
+          <stop offset="1" stopColor="#FF9D00" />
         </linearGradient>
         <linearGradient
           id="paint16_linear_2_192"
@@ -1999,8 +1998,8 @@ function Sunny({ className }: { className?: string }) {
           y2="146.286"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFD45C" />
-          <stop offset="1" stop-color="#FF9D00" />
+          <stop stopColor="#FFD45C" />
+          <stop offset="1" stopColor="#FF9D00" />
         </linearGradient>
       </defs>
     </svg>

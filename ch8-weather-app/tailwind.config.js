@@ -9,6 +9,8 @@ module.exports = {
         "black-chasm": "#0e2e3a",
         "freezing-vapor": "#d3ebf4",
         "devil-blue": "#247490",
+        "diminished-blue": "#BCE1EF",
+        carol: "#2B8BAD",
       },
       fontFamily: {
         "krona-one": ["'Krona One'", "sans-serif"],
