@@ -7,32 +7,36 @@ function App() {
   const [selectedIdx, setSelectedIdx] = useState(0);
 
   return (
-    <div className="min-h-full h-auto flex">
-      <Sidebar dir="left" />
-      {/* TODO WHY is figures width so wide!!??!! */}
-      <div className="flex-1 flex items-center justify-center">
-        <figure>
-          <img
-            src={imgs[selectedIdx].path}
-            alt=""
-            className="w-3/6 aspect-[4/3]"
-          />
-          <figcaption className="figcaption ">
-            <ReactMarkdown className="text-center">
-              {imgs[selectedIdx].caption}
-            </ReactMarkdown>
-          </figcaption>
-        </figure>
-      </div>
-      <Sidebar dir="right" />
-      <Slider />
+    <div className="min-h-full h-auto grid grid-cols-[auto_1fr_auto] grid-rows-[1fr_auto]">
+      <Sidebar dir="left" className="col-start-1 row-start-1 row-span-2" />
+      <figure className="flex flex-col items-center justify-center col-start-2 row-span-1 row-start-1">
+        <img
+          src={imgs[selectedIdx].path}
+          alt=""
+          className="w-[calc(100vh_-_220px)] aspect-[4/3] block"
+        />
+        <figcaption className="figcaption ">
+          <ReactMarkdown className="text-center">
+            {imgs[selectedIdx].caption}
+          </ReactMarkdown>
+        </figcaption>
+      </figure>
+      <Sidebar dir="right" className="col-start-3 row-span-2 row-start-1" />
+      <Slider className="col-start-1 col-span-3 row-start-2" />
     </div>
   );
 }
 
-function Sidebar({ dir }: { dir: "left" | "right" }) {
+function Sidebar({
+  dir,
+  className,
+}: {
+  dir: "left" | "right";
+  className: string;
+}) {
   return (
-    <div className="bg-pink-primary/30 w-24 min-h-full h-auto grid place-items-center">
+    <div
+      className={`bg-pink-primary/30 w-24 min-h-full h-auto grid place-items-center ${className}`}>
       <img
         src={dir === "left" ? leftChevron : rightChevron}
         alt="left chevron"
@@ -41,9 +45,9 @@ function Sidebar({ dir }: { dir: "left" | "right" }) {
   );
 }
 
-function Slider() {
+function Slider({ className }: { className: string }) {
   return (
-    <div className="absolute bottom-0  p-5">
+    <div className={`p-5 ${className}`}>
       <div className="flex overflow-x-scroll no-scrollbar gap-7">
         {imgs.map((m, i) => (
           <img
