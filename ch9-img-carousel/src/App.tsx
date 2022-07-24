@@ -50,7 +50,7 @@ function Sidebar({
 }) {
   return (
     <div
-      className={`bg-pink-primary/30 w-24 min-h-full h-auto grid place-items-center ${className}`}>
+      className={`bg-pink-primary/30 hover:bg-pink-primary w-24 min-h-full h-auto grid place-items-center ${className}`}>
       <button
         onClick={() =>
           setSelectedIdx((i) => {
