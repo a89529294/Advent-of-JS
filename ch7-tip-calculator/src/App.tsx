@@ -35,7 +35,6 @@ function App() {
             <InputSection
               img={dollar}
               amount={preTipTotal}
-              // displayAmount={displayPreTipTotal}
               onChange={(arg) => {
                 const indexOfDot = arg.indexOf(".");
                 if (Number.isNaN(+arg)) return;
