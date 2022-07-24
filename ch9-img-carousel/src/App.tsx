@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import leftChevron from "./assets/chevron-left.svg";
 import rightChevron from "./assets/chevron-right.svg";
@@ -8,7 +8,11 @@ function App() {
 
   return (
     <div className="min-h-full h-auto grid grid-cols-[auto_1fr_auto] grid-rows-[1fr_auto]">
-      <Sidebar dir="left" className="col-start-1 row-start-1 row-span-2" />
+      <Sidebar
+        dir="left"
+        className="col-start-1 row-start-1 row-span-2"
+        setSelectedIdx={setSelectedIdx}
+      />
       <figure className="flex flex-col items-center justify-center col-start-2 row-span-1 row-start-1">
         <img
           src={imgs[selectedIdx].path}
@@ -21,8 +25,16 @@ function App() {
           </ReactMarkdown>
         </figcaption>
       </figure>
-      <Sidebar dir="right" className="col-start-3 row-span-2 row-start-1" />
-      <Slider className="col-start-1 col-span-3 row-start-2" />
+      <Sidebar
+        dir="right"
+        className="col-start-3 row-span-2 row-start-1"
+        setSelectedIdx={setSelectedIdx}
+      />
+      <Slider
+        className="col-start-1 col-span-3 row-start-2"
+        selectedIdx={selectedIdx}
+        setSelectedIdx={setSelectedIdx}
+      />
     </div>
   );
 }
@@ -30,31 +42,67 @@ function App() {
 function Sidebar({
   dir,
   className,
+  setSelectedIdx,
 }: {
   dir: "left" | "right";
   className: string;
+  setSelectedIdx: React.Dispatch<React.SetStateAction<number>>;
 }) {
   return (
     <div
       className={`bg-pink-primary/30 w-24 min-h-full h-auto grid place-items-center ${className}`}>
-      <img
-        src={dir === "left" ? leftChevron : rightChevron}
-        alt="left chevron"
-      />
+      <button
+        onClick={() =>
+          setSelectedIdx((i) => {
+            if (dir === "left") return i > 0 ? --i : 0;
+            else return i < imgs.length - 1 ? ++i : imgs.length - 1;
+          })
+        }>
+        <img
+          src={dir === "left" ? leftChevron : rightChevron}
+          alt="left chevron"
+        />
+      </button>
     </div>
   );
 }
 
-function Slider({ className }: { className: string }) {
+function Slider({
+  className,
+  selectedIdx,
+  setSelectedIdx,
+}: {
+  className: string;
+  selectedIdx: number;
+  setSelectedIdx: (arg: number) => void;
+}) {
+  const imgsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const selectedImgLeft =
+      imgsRef.current?.children[selectedIdx].getBoundingClientRect().left ?? 0;
+    const windowWidth =
+      window.innerWidth || document.documentElement.clientWidth;
+    selectedImgLeft > windowWidth &&
+      imgsRef.current?.children[selectedIdx].scrollIntoView();
+  }, [selectedIdx]);
+
   return (
     <div className={`p-5 ${className}`}>
-      <div className="flex overflow-x-scroll no-scrollbar gap-7">
+      <div className="flex overflow-x-scroll no-scrollbar gap-7" ref={imgsRef}>
         {imgs.map((m, i) => (
-          <img
-            key={i}
-            src={m.path}
-            className="w-44 aspect-square object-cover"
-          />
+          <button
+            className={`relative w-44 aspect-square shrink-0 border-solid border-pink-primary ${
+              i === selectedIdx ? "border-[10px]" : ""
+            }`}
+            onClick={() => setSelectedIdx(i)}
+            key={i}>
+            <img
+              key={i}
+              src={m.path}
+              className="absolute top-0 h-full w-full object-cover"
+            />
+          </button>
         ))}
       </div>
     </div>
