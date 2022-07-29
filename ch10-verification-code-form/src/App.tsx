@@ -24,6 +24,7 @@ function App() {
             setValue={setCodes}
             ref={ref0}
             refs={[ref0, ref1, ref2, ref3]}
+            setCodes={setCodes}
           />
           <InputBox
             pos={1}
@@ -59,11 +60,13 @@ const InputBox = React.forwardRef(
       value,
       setValue,
       refs,
+      setCodes,
     }: {
       pos: number;
       value: numOrEmptyString;
       setValue: React.Dispatch<Action>;
       refs: React.RefObject<HTMLInputElement>[];
+      setCodes?: React.Dispatch<Action>;
     },
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
@@ -73,9 +76,36 @@ const InputBox = React.forwardRef(
         className="w-20 aspect-square bg-[#F0F3FA] rounded-md shadow-[inset_0_0_4px_rgba(0,0,0,0.05)] text-purple-primary text-[60px] font-black text-center"
         value={value}
         onChange={(e) =>
-          setValue({ payload: +e.target.value, type: pos, refs: refs })
+          setValue({
+            payload: e.target.value === "" ? e.target.value : +e.target.value,
+            pos,
+            refs,
+            kind: "typedIn",
+          })
         }
+        autoFocus={pos === 0}
         ref={ref}
+        onKeyDown={(e) => {
+          if (
+            !setCodes ||
+            (!(e.ctrlKey && e.key === "v") && !(e.metaKey && e.key === "v"))
+          )
+            return;
+          navigator.clipboard.readText().then((r) => {
+            const code = r.slice(0, 4);
+            // TODO handle cases where not all 4 are convertable to numbers
+            setCodes({
+              kind: "copyAndPaste",
+              payload: [
+                +code.charAt(0),
+                +code.charAt(1),
+                +code.charAt(2),
+                +code.charAt(3),
+              ],
+              refs,
+            });
+          });
+        }}
       />
     );
   }
@@ -85,19 +115,32 @@ function reducer(
   state: numOrEmptyString[],
   action: Action
 ): numOrEmptyString[] {
-  action.refs[
-    action.type + 1 < action.refs.length ? action.type + 1 : action.type
-  ].current?.focus();
-  const copy = state.slice();
-  if (copy[action.type]) return copy;
-  copy.splice(action.type, 1, action.payload);
-  return copy;
+  if (action.kind === "copyAndPaste") {
+    action.refs[3].current?.focus();
+    return action.payload;
+  } else {
+    action.payload &&
+      action.refs[
+        action.pos + 1 < action.refs.length ? action.pos + 1 : action.pos
+      ].current?.focus();
+    const copy = state.slice();
+    //   if (copy[action.pos]) return copy;
+    copy.splice(action.pos, 1, action.payload);
+    return copy;
+  }
 }
 
 type numOrEmptyString = number | "";
-type Action = {
-  type: number;
-  payload: number;
-  refs: React.RefObject<HTMLInputElement>[];
-};
+type Action =
+  | {
+      kind: "typedIn";
+      pos: number;
+      payload: number | "";
+      refs: React.RefObject<HTMLInputElement>[];
+    }
+  | {
+      kind: "copyAndPaste";
+      payload: number[];
+      refs: React.RefObject<HTMLInputElement>[];
+    };
 export default App;
