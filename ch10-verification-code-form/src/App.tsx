@@ -1,13 +1,14 @@
 import React from "react";
-import { useReducer, useRef, useState } from "react";
+import { useReducer, useRef } from "react";
 
-// TODO implement copy & paste!
 function App() {
   const [codes, setCodes] = useReducer(reducer, new Array(4).fill(""));
+
   const ref0 = useRef<HTMLInputElement>(null);
   const ref1 = useRef<HTMLInputElement>(null);
   const ref2 = useRef<HTMLInputElement>(null);
   const ref3 = useRef<HTMLInputElement>(null);
+  const refs = [ref0, ref1, ref2, ref3];
   return (
     <div className="bg-[#E3E9F9] min-h-full grid place-items-center font-pro">
       <form className="bg-white rounded-lg pt-16 pb-7 px-8 grid gap-11 text-center">
@@ -18,38 +19,16 @@ function App() {
           Please enter the code that we sent to (***) *** - 2819.
         </h2>
         <div className="flex justify-center gap-5">
-          <InputBox
-            pos={0}
-            value={codes[0]}
-            setValue={setCodes}
-            ref={ref0}
-            refs={[ref0, ref1, ref2, ref3]}
-            setCodes={setCodes}
-          />
-          <InputBox
-            pos={1}
-            value={codes[1]}
-            setValue={setCodes}
-            ref={ref1}
-            refs={[ref0, ref1, ref2, ref3]}
-            setCodes={setCodes}
-          />
-          <InputBox
-            pos={2}
-            value={codes[2]}
-            setValue={setCodes}
-            ref={ref2}
-            refs={[ref0, ref1, ref2, ref3]}
-            setCodes={setCodes}
-          />
-          <InputBox
-            pos={3}
-            value={codes[3]}
-            setValue={setCodes}
-            ref={ref3}
-            refs={[ref0, ref1, ref2, ref3]}
-            setCodes={setCodes}
-          />
+          {new Array(NumberOfInputBoxes).fill("").map((v, i) => (
+            <InputBox
+              pos={i}
+              value={codes[i]}
+              setValue={setCodes}
+              ref={refs[i]}
+              refs={refs}
+              setCodes={setCodes}
+            />
+          ))}
         </div>
       </form>
     </div>
@@ -79,8 +58,9 @@ const InputBox = React.forwardRef(
         className="w-20 aspect-square bg-[#F0F3FA] rounded-md shadow-[inset_0_0_4px_rgba(0,0,0,0.05)] text-purple-primary text-[60px] font-black text-center"
         value={value}
         onChange={(e) => {
+          const v = e.target.value;
           setValue({
-            payload: e.target.value === "" ? e.target.value : +e.target.value,
+            payload: v === "" ? v : +v,
             pos,
             refs,
             kind: "typedIn",
@@ -96,14 +76,13 @@ const InputBox = React.forwardRef(
             .split("");
           while (contentArr.length < 4) contentArr.push("");
           let validContent = true;
-          const contentArrModified: (number | "")[] = [];
+          const contentArrModified: numOrVoidStr[] = [];
           for (let i = 0; i < contentArr.length; i++) {
-            if (Number.isNaN(+contentArr[i])) {
+            const char = contentArr[i];
+            if (Number.isNaN(+char)) {
               validContent = false;
               break;
-            } else
-              contentArrModified[i] =
-                contentArr[i] === "" ? "" : +contentArr[i];
+            } else contentArrModified[i] = char === "" ? "" : +char;
           }
           if (!validContent) return;
           else {
@@ -120,21 +99,17 @@ const InputBox = React.forwardRef(
 );
 
 function reducer(state: numOrVoidStr[], action: Action): numOrVoidStr[] {
-  if (action.kind === "copyAndPaste") {
-    action.refs[
-      action.payload.indexOf("") === -1
-        ? action.payload.length - 1
-        : action.payload.indexOf("")
+  const { kind, refs, payload } = action;
+  if (kind === "copyAndPaste") {
+    refs[
+      payload.indexOf("") === -1 ? payload.length - 1 : payload.indexOf("")
     ].current?.focus();
-    return action.payload;
+    return payload;
   } else {
-    action.payload &&
-      action.refs[
-        action.pos + 1 < action.refs.length ? action.pos + 1 : action.pos
-      ].current?.focus();
+    const { pos } = action;
+    payload && refs[pos + 1 < refs.length ? pos + 1 : pos].current?.focus();
     const copy = state.slice();
-    //   if (copy[action.pos]) return copy;
-    copy.splice(action.pos, 1, action.payload);
+    copy.splice(pos, 1, payload);
     return copy;
   }
 }
@@ -152,4 +127,7 @@ type Action =
       payload: numOrVoidStr[];
       refs: React.RefObject<HTMLInputElement>[];
     };
+
+const NumberOfInputBoxes = 4;
+
 export default App;
