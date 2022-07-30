@@ -32,6 +32,7 @@ function App() {
             setValue={setCodes}
             ref={ref1}
             refs={[ref0, ref1, ref2, ref3]}
+            setCodes={setCodes}
           />
           <InputBox
             pos={2}
@@ -39,6 +40,7 @@ function App() {
             setValue={setCodes}
             ref={ref2}
             refs={[ref0, ref1, ref2, ref3]}
+            setCodes={setCodes}
           />
           <InputBox
             pos={3}
@@ -46,6 +48,7 @@ function App() {
             setValue={setCodes}
             ref={ref3}
             refs={[ref0, ref1, ref2, ref3]}
+            setCodes={setCodes}
           />
         </div>
       </form>
@@ -63,10 +66,10 @@ const InputBox = React.forwardRef(
       setCodes,
     }: {
       pos: number;
-      value: numOrEmptyString;
+      value: numOrVoidStr;
       setValue: React.Dispatch<Action>;
       refs: React.RefObject<HTMLInputElement>[];
-      setCodes?: React.Dispatch<Action>;
+      setCodes: React.Dispatch<Action>;
     },
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
@@ -75,48 +78,54 @@ const InputBox = React.forwardRef(
         type="number"
         className="w-20 aspect-square bg-[#F0F3FA] rounded-md shadow-[inset_0_0_4px_rgba(0,0,0,0.05)] text-purple-primary text-[60px] font-black text-center"
         value={value}
-        onChange={(e) =>
+        onChange={(e) => {
           setValue({
             payload: e.target.value === "" ? e.target.value : +e.target.value,
             pos,
             refs,
             kind: "typedIn",
-          })
-        }
+          });
+        }}
         autoFocus={pos === 0}
         ref={ref}
-        onKeyDown={(e) => {
-          if (
-            !setCodes ||
-            (!(e.ctrlKey && e.key === "v") && !(e.metaKey && e.key === "v"))
-          )
-            return;
-          navigator.clipboard.readText().then((r) => {
-            const code = r.slice(0, 4);
-            // TODO handle cases where not all 4 are convertable to numbers
+        onPaste={(e) => {
+          e.preventDefault();
+          const contentArr: string[] = e.clipboardData
+            .getData("text")
+            .slice(0, 4)
+            .split("");
+          while (contentArr.length < 4) contentArr.push("");
+          let validContent = true;
+          const contentArrModified: (number | "")[] = [];
+          for (let i = 0; i < contentArr.length; i++) {
+            if (Number.isNaN(+contentArr[i])) {
+              validContent = false;
+              break;
+            } else
+              contentArrModified[i] =
+                contentArr[i] === "" ? "" : +contentArr[i];
+          }
+          if (!validContent) return;
+          else {
             setCodes({
               kind: "copyAndPaste",
-              payload: [
-                +code.charAt(0),
-                +code.charAt(1),
-                +code.charAt(2),
-                +code.charAt(3),
-              ],
+              payload: contentArrModified,
               refs,
             });
-          });
+          }
         }}
       />
     );
   }
 );
 
-function reducer(
-  state: numOrEmptyString[],
-  action: Action
-): numOrEmptyString[] {
+function reducer(state: numOrVoidStr[], action: Action): numOrVoidStr[] {
   if (action.kind === "copyAndPaste") {
-    action.refs[3].current?.focus();
+    action.refs[
+      action.payload.indexOf("") === -1
+        ? action.payload.length - 1
+        : action.payload.indexOf("")
+    ].current?.focus();
     return action.payload;
   } else {
     action.payload &&
@@ -130,17 +139,17 @@ function reducer(
   }
 }
 
-type numOrEmptyString = number | "";
+type numOrVoidStr = number | "";
 type Action =
   | {
       kind: "typedIn";
       pos: number;
-      payload: number | "";
+      payload: numOrVoidStr;
       refs: React.RefObject<HTMLInputElement>[];
     }
   | {
       kind: "copyAndPaste";
-      payload: number[];
+      payload: numOrVoidStr[];
       refs: React.RefObject<HTMLInputElement>[];
     };
 export default App;
