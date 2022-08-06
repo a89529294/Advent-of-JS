@@ -6,6 +6,12 @@ module.exports = {
       fontFamily: {
         openSans: ["'Open Sans'", "sans-serif"],
       },
+      screens: {
+        "hover-hover": { raw: "(hover: hover)" },
+      },
+      colors: {
+        yellow: "#FFDD00",
+      },
     },
   },
   plugins: [],
