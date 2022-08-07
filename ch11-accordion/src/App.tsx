@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
 import q1 from "./assets/question-1.svg";
 import q2 from "./assets/question-2.svg";
 import chevron from "./assets/chevron.svg";
@@ -21,11 +21,11 @@ function App() {
           in ea id qui officia consequat sint. Tempor enim ut id consectetur in.
         </p>
       </Accordion>
-      {/* <Accordion title="Do you provide a certificate of completion?" img={q2}>
+      <Accordion title="Do you provide a certificate of completion?" img={q2}>
         Reprehenderit laboris ipsum elit ex est elit ullamco. Aliqua non
         deserunt reprehenderit adipisicing voluptate aliqua et ullamco
         cupidatat. Culpa aute Lorem officia labore non fugiat pariatur eu esse.
-      </Accordion> */}
+      </Accordion>
     </div>
   );
 }
@@ -40,50 +40,69 @@ function Accordion({
   img: string;
 }) {
   const [show, setShow] = useState(false);
-  const articleRef = useRef<HTMLElement>(null);
+  const [minH, setMinH] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
+  const ref2 = useRef<HTMLDivElement>(null);
+  const ref3 = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMinH(ref.current?.getBoundingClientRect().height ?? 0);
+  });
 
   return (
     <article
-      ref={articleRef}
-      className="cursor-pointer border-4 border-black border-solid w-9/12 relative z-0 bg-white group"
-      style={{ transformStyle: "preserve-3d" }}
+      style={{
+        minHeight: minH + "px",
+      }}
+      className={`cursor-pointer w-9/12 relative z-0 group ${
+        show ? "mb-36" : ""
+      }`}
       onClick={() => setShow((s) => !s)}>
-      <AccordionPlaque img={img} title={title} />
-      <AccordionPlaque img={img} title={title} invisible />
+      <AccordionPlaque img={img} title={title} ref={ref} />
+
       {/* the offset grey bg that changes color when hovered */}
       <div
-        className="bg-gray-100  w-full h-full  -z-10 transition-colors duration-500 hover-hover:group-hover:bg-yellow"
-        style={{
-          transform: "translateZ(-10px)",
-        }}>
+        className={`relative bg-gray-100 w-full h-full transition-colors duration-500  mt-10 ml-14 ${
+          show ? "bg-yellow" : "hover-hover:group-hover:bg-yellow"
+        }`}>
         <img
           src={chevron}
           alt="chevron down"
-          className="absolute right-7 translate-x-1/2 top-5 "
+          className="absolute right-7 translate-x-1/2 top-5 z-10"
         />
         {/* the collapsible content  */}
         <div
-          className={`transition origin-top duration-300 absolute top-full p-10 bg-yellow text-xl leading-10  ${
-            show ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0"
-          }`}>
-          {children}
+          ref={ref2}
+          className={`relative transition-all origin-top duration-300 p-10 bg-yellow text-xl leading-10 h-0 overflow-hidden ${
+            show ? "opacity-100" : " opacity-0"
+          }`}
+          style={{
+            height: show
+              ? (ref3.current?.clientHeight ?? 0) + minH + "px"
+              : 0 + "px",
+            minHeight: minH + "px",
+            top: minH + "px",
+          }}>
+          <div className="" ref={ref3}>
+            {children}
+          </div>
         </div>
       </div>
     </article>
   );
 }
 
-function AccordionPlaque({
-  img,
-  title,
-  invisible = false,
-}: {
-  img: string;
-  title: string;
-  invisible?: boolean;
-}) {
+const AccordionPlaque = forwardRef<
+  HTMLDivElement,
+  {
+    img: string;
+    title: string;
+  }
+>(function ({ img, title }, ref) {
   return (
-    <div className={`flex ${invisible ? "invisible" : "absolute"}`}>
+    <div
+      ref={ref}
+      className={`absolute w-full z-10 flex border-4 bg-white border-black border-solid`}>
       <div className="bg-black w-24 relative">
         <img
           src={img}
@@ -94,6 +113,6 @@ function AccordionPlaque({
       <div className="flex-1 p-6 font-extrabold text-2xl">{title}</div>
     </div>
   );
-}
+});
 
 export default App;
