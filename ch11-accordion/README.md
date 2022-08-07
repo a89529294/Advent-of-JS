@@ -8,3 +8,8 @@
 4. `clientHeight` excludes border, margin and horizontal scrollbar if present. use `getBoundingClientRect` instead.
 
 ## TODO
+
+1. Implementation is way too JS heavy.
+2. Transition is janky.
+3. Use more semantic html tags, `<details>`, `<summary/>`
+4. Read https://css-tricks.com/how-to-animate-the-details-element-using-waapi/
