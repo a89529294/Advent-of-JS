@@ -40,29 +40,29 @@ function Accordion({
   img: string;
 }) {
   const [show, setShow] = useState(false);
-  const [minH, setMinH] = useState(0);
+  const [summaryH, setSummaryH] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const ref2 = useRef<HTMLDivElement>(null);
-  const ref3 = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setMinH(ref.current?.getBoundingClientRect().height ?? 0);
-  });
+    !summaryH && setSummaryH(ref.current?.getBoundingClientRect().height ?? 0);
+  }, []);
 
   return (
     <article
-      style={{
-        minHeight: minH + "px",
-      }}
-      className={`cursor-pointer w-9/12 relative z-0 group ${
-        show ? "mb-36" : ""
-      }`}
+      ref={ref}
+      className={`cursor-pointer w-9/12 relative z-0 group ${show ? "" : ""}`}
       onClick={() => setShow((s) => !s)}>
-      <AccordionPlaque img={img} title={title} ref={ref} />
+      <AccordionSummary img={img} title={title} />
 
       {/* the offset grey bg that changes color when hovered */}
       <div
-        className={`relative bg-gray-100 w-full h-full transition-colors duration-500  mt-10 ml-14 ${
+        style={{
+          top: -summaryH + 100 + "px",
+          right: -48 + "px",
+          //   height: summaryH + "px",
+        }}
+        className={`relative bg-gray-100 w-full transition-colors duration-500 ${
           show ? "bg-yellow" : "hover-hover:group-hover:bg-yellow"
         }`}>
         <img
@@ -70,39 +70,16 @@ function Accordion({
           alt="chevron down"
           className="absolute right-7 translate-x-1/2 top-5 z-10"
         />
-        {/* the collapsible content  */}
-        <div
-          ref={ref2}
-          className={`relative transition-all origin-top duration-300 p-10 bg-yellow text-xl leading-10 h-0 overflow-hidden ${
-            show ? "opacity-100" : " opacity-0"
-          }`}
-          style={{
-            height: show
-              ? (ref3.current?.clientHeight ?? 0) + minH + "px"
-              : 0 + "px",
-            minHeight: minH + "px",
-            top: minH + "px",
-          }}>
-          <div className="" ref={ref3}>
-            {children}
-          </div>
-        </div>
+        <AccordionDetails show={show}>{children}</AccordionDetails>
       </div>
     </article>
   );
 }
 
-const AccordionPlaque = forwardRef<
-  HTMLDivElement,
-  {
-    img: string;
-    title: string;
-  }
->(function ({ img, title }, ref) {
+function AccordionSummary({ img, title }: { img: string; title: string }) {
   return (
     <div
-      ref={ref}
-      className={`absolute w-full z-10 flex border-4 bg-white border-black border-solid`}>
+      className={`relative z-10 flex border-4 bg-white border-black border-solid`}>
       <div className="bg-black w-24 relative">
         <img
           src={img}
@@ -113,6 +90,22 @@ const AccordionPlaque = forwardRef<
       <div className="flex-1 p-6 font-extrabold text-2xl">{title}</div>
     </div>
   );
-});
+}
+function AccordionDetails({
+  children,
+  show,
+}: {
+  children: React.ReactNode;
+  show: boolean;
+}) {
+  return (
+    <div
+      className={`relative transition-all origin-top duration-500 p-10 bg-yellow text-xl leading-10 overflow-hidden ${
+        show ? "opacity-100 max-h-[500px]" : " opacity-0 max-h-0"
+      }`}>
+      {children}
+    </div>
+  );
+}
 
 export default App;
